@@ -37,10 +37,10 @@ int main() {
 
 
 	be = fopen("beplay.txt", "r+");
-	
 
 
-	if (be==NULL){
+
+	if (be == NULL){
 	}
 	else{
 		while (fscanf(be, "%d %d %d %s", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day, data[cnt].Comment) != EOF)
@@ -48,7 +48,7 @@ int main() {
 
 			cnt++;
 		}
-	fclose(be);
+		fclose(be);
 	}
 
 
@@ -60,7 +60,7 @@ int main() {
 		printf(Menu); printf("===========================\n"); scanf("%d", &inputN);
 		Init();
 		if (inputN == 1) {
-			Cal = fopen("Calendar.txt", "r+");
+			Cal = fopen("Calendar.txt", "w+t");
 			printf("현재 달력을 출력합니다.\n\n");
 			int monthday[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, startday = 1, allday = 1, line = 0;
 			char buffer[S_size];
@@ -140,7 +140,7 @@ int main() {
 			while (strlen(data[cnt].Comment) > 100) {
 				Init(); printf("일정 내용의 길이가 너무 깁니다. 다시 입력해주세요."); scanf("%[^\n]c", &data[cnt].Comment);
 			}
-			
+
 			printf("입력 완료\n");
 			cnt++;
 			inputN = 0; Stop(); Init();
