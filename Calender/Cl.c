@@ -54,34 +54,10 @@ int main() {
 	
 	be = fopen("beplay.txt", "r+");
 	
-	while (!feof(be))
-	{	
-		char  str_buffer[50] = "";
-		fgets(buffer, sizeof(buffer), be);
-		if (buffer[0] == '\n') {
-			break;
-		}
-		strcat(schedule,buffer);
-		sprintf(years, "%c%c%c%c", buffer[0], buffer[1], buffer[2], buffer[3]);
-		sprintf(months, "%c%c", buffer[5], buffer[6]);
-		sprintf(days, "%c%c", buffer[8], buffer[9]);
-		data[cnt].Year = atoi(years);
-		data[cnt].Month = atoi(months);
-		data[cnt].Day = atoi(days);
-		
-		
-		for (int i = 11; buffer[i]!=NULL; i++) {
-			char dfgdfs[2] = { NULL };
-			dfgdfs[0] = buffer[i];
-			strcat(str_buffer, dfgdfs);
-		}
-		
-		strcpy(data[cnt].Comment, str_buffer);
-		printf("%s", str_buffer);
-		//printf("%s %s %s %s", years, months, days,str_buffer);
+	while (fscanf(be,"%d %d %d %s", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day, data[cnt].Comment)!=EOF)
+	{
 		cnt++;
 	}
-
 
 
 	fclose(be);
@@ -133,7 +109,7 @@ int main() {
 		}
 		else if (inputN == 2) {
 			for(int i=0;i<cnt;i++)
-				printf("%d %d %d %s", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
+				printf("%d %d %d %s\n", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
 			inputN = 0; Stop(); Init();
 		}
 		else if (inputN == 3) {
@@ -208,7 +184,7 @@ int main() {
 			if (data[i].Year == ye) {
 				if (data[i].Day == da) {
 					if (data[i].Month == mo) {
-						if (!strcmp(data[i].Comment, strcat(chen, "\n"))) {
+						if (!strcmp(data[i].Comment, chen)) {
 							cnt--;
 							for (int j = i; j < cnt; j++) {
 								data[j] = data[j + 1];
@@ -226,8 +202,12 @@ int main() {
 			Init();
 			printf("프로그램이 종료됩니다.");
 			be = fopen("beplay.txt", "w");
-			for(int i=0;i<cnt;i++)
-				fprintf(be, "%d %d %d %s", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
+			for (int i = 0; i < cnt; i++) {
+				if(i==cnt-1)
+					fprintf(be, "%d %d %d %s", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
+				else
+					fprintf(be, "%d %d %d %s\n", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
+			}
 			return 0;
 		}
 		else {
