@@ -7,8 +7,8 @@
 #include <Windows.h>
 #define S_size 100
 
-char errorAlret[74] = "¾Ë¼ö¾ø´Â ¹®ÀÚ, ¼ıÀÚ, ±âÈ£ ¶Ç´Â 2°¡Áö ÀÌ»ó ÀÔ·ÂÇÏ¿© ÇÁ·Î±×·¥ÀÌ Á¾·áµË´Ï´Ù.";
-char Menu[120] = "    1. ÇöÀç ´Ş·Â Ãâ·Â\n    2. ÀÏÁ¤ ¸ñ·Ï Ç¥½Ã\n    3. ÀÏÁ¤ Ãß°¡ ÇÏ±â\n    4. ÀÏÁ¤ »èÁ¦ ÇÏ±â\n\n\t0. ³ª°¡±â\n\n";
+char errorAlret[74] = "ì•Œìˆ˜ì—†ëŠ” ë¬¸ì, ìˆ«ì, ê¸°í˜¸ ë˜ëŠ” 2ê°€ì§€ ì´ìƒ ì…ë ¥í•˜ì—¬ í”„ë¡œê·¸ë¨ì´ ì¢…ë£Œë©ë‹ˆë‹¤.";
+char Menu[120] = "    1. í˜„ì¬ ë‹¬ë ¥ ì¶œë ¥\n    2. ì¼ì • ëª©ë¡ í‘œì‹œ\n    3. ì¼ì • ì¶”ê°€ í•˜ê¸°\n    4. ì¼ì • ì‚­ì œ í•˜ê¸°\n\n\t0. ë‚˜ê°€ê¸°\n\n";
 char bar[65] = "===========================================================";
 
 void Init() {
@@ -24,53 +24,44 @@ struct Calendar {
 	int Day;
 	char Comment[100];
 };
-char schedule[20000]="";
-
-void bubble_sort(struct Calendar list[], int n) {
-	int i, j;
-	struct Calendar temp;
-	for (i = n - 1; i > 0; i--) {
-		// 0 ~ (i-1)±îÁö ¹İº¹
-		for (j = 0; j < i; j++) {
-			// j¹øÂ°¿Í j+1¹øÂ°ÀÇ ¿ä¼Ò°¡ Å©±â ¼øÀÌ ¾Æ´Ï¸é ±³È¯
-			if (list[j].Year < list[j + 1].Year) {
-				temp = list[j];
-				list[j] = list[j + 1];
-				list[j + 1] = temp;
-			}
-		}
-	}
-}
+char schedule[20000] = "";
 
 int main() {
 	time_t t = time(NULL);
 	struct tm tm = *localtime(&t);
 	struct Calendar data[100];
-	FILE* Cal = NULL, *be=NULL;
+	FILE* Cal = NULL, *be = NULL;
 	char buffer[200];
-	char years[8] = "",months[4]="",days[4]="";
+	char years[8] = "", months[4] = "", days[4] = "";
 	int inputN; int year = tm.tm_year + 1900; int month = tm.tm_mon + 1; int cnt = 0;
-	
-	
+
+
 	be = fopen("beplay.txt", "r+");
 	
-	while (fscanf(be,"%d %d %d %s", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day, data[cnt].Comment)!=EOF)
-	{
-		cnt++;
+
+
+	if (be==NULL){
+	}
+	else{
+		while (fscanf(be, "%d %d %d %s", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day, data[cnt].Comment) != EOF)
+		{
+
+			cnt++;
+		}
+	fclose(be);
 	}
 
 
-	fclose(be);
-
 	while (1) {
-		
 
-		printf("======°£´ÜÇÑ Calendar======\n\n");
+
+
+		printf("======ê°„ë‹¨í•œ Calendar======\n\n");
 		printf(Menu); printf("===========================\n"); scanf("%d", &inputN);
 		Init();
 		if (inputN == 1) {
 			Cal = fopen("Calendar.txt", "r+");
-			printf("ÇöÀç ´Ş·ÂÀ» Ãâ·ÂÇÕ´Ï´Ù.\n\n");
+			printf("í˜„ì¬ ë‹¬ë ¥ì„ ì¶œë ¥í•©ë‹ˆë‹¤.\n\n");
 			int monthday[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, startday = 1, allday = 1, line = 0;
 			char buffer[S_size];
 			monthday[2] = 28;  startday = 1; allday = 1;
@@ -83,13 +74,13 @@ int main() {
 			}
 			startday = allday % 7;
 			fseek(Cal, 0, SEEK_SET);
-			fprintf(Cal, "=========%d %d %d=========\n  ÀÏ  ¿ù  È­  ¼ö  ¸ñ  ±İ  Åä\n", year, month, tm.tm_mday);
+			fprintf(Cal, "=========%d %d %d=========\n  ì¼  ì›”  í™”  ìˆ˜  ëª©  ê¸ˆ  í† \n", year, month, tm.tm_mday);
 			for (int i = 0; i < startday; i++) {
 				fprintf(Cal, "    ");
 			}
 			for (int i = 1; i <= monthday[month]; i++) {
 				if (i == tm.tm_mday) {
-					fprintf(Cal, "  ¡Ü");
+					fprintf(Cal, "  â—");
 				}
 				else {
 					fprintf(Cal, "%4d", i);
@@ -108,102 +99,82 @@ int main() {
 			inputN = 0; Stop(); Init();
 		}
 		else if (inputN == 2) {
-			for(int i=0;i<cnt;i++)
+			for (int i = 0; i<cnt; i++)
 				printf("%d %d %d %s\n", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
 			inputN = 0; Stop(); Init();
 		}
 		else if (inputN == 3) {
-			
-			printf("ÀÏÁ¤À» Ãß°¡ÇÒ ³¯Â¥¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n ex) %d %d %d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday); scanf("%d %d %d", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day);
+
+			printf("ì¼ì •ì„ ì¶”ê°€í•  ë‚ ì§œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n ex) %d %d %d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday); scanf("%d %d %d", &data[cnt].Year, &data[cnt].Month, &data[cnt].Day);
 			while (data[cnt].Year < tm.tm_year + 1900) {
-				Init(); printf("³âµµ¸¦ ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_year + 1900); scanf("%d", &data[cnt].Year);
+				Init(); printf("ë…„ë„ë¥¼ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_year + 1900); scanf("%d", &data[cnt].Year);
 			}
 			while (data[cnt].Month > 12 || data[cnt].Month < 1) {
-				Init(); printf("´ŞÀ» ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_mon + 1); scanf("%d", &data[cnt].Month);
+				Init(); printf("ë‹¬ì„ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_mon + 1); scanf("%d", &data[cnt].Month);
 			}
 			while (data[cnt].Day < 1 || data[cnt].Day > 31) {
 				if (data[cnt].Month % 2 == 0) {
 					if (data[cnt].Month == 2) {
 						if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
 							while (data[cnt].Day < 0 || data[cnt].Day > 29) {
-								Init(); printf("ÀÏÀ» ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
+								Init(); printf("ì¼ì„ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
 							}
 						}
 						while (data[cnt].Day < 1 || data[cnt].Day > 28) {
-							Init(); printf("ÀÏÀ» ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
+							Init(); printf("ì¼ì„ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
 						}
 					}
 					else {
 						while (data[cnt].Day < 1 || data[cnt].Day > 30) {
-							Init(); printf("ÀÏÀ» ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
+							Init(); printf("ì¼ì„ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
 						}
 					}
 				}
 				else {
 					while (data[cnt].Day < 1 || data[cnt].Day > 31) {
-						Init(); printf("ÀÏÀ» ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
+						Init(); printf("ì¼ì„ ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”. ex) %d\n", tm.tm_mday); scanf("%d", &data[cnt].Day);
 					}
 				}
 			}
-			printf("ÀÏÁ¤ÀÇ ³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä. (ÇÑ±Û 50ÀÚ,¿µ¾î 100ÀÚ)\n"); scanf(" %[^\n]c", &data[cnt].Comment);
+			printf("ì¼ì •ì˜ ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”. (í•œê¸€ 50ì,ì˜ì–´ 100ì)\n"); scanf(" %[^\n]c", &data[cnt].Comment);
 			while (strlen(data[cnt].Comment) > 100) {
-				Init(); printf("ÀÏÁ¤ ³»¿ëÀÇ ±æÀÌ°¡ ³Ê¹« ±é´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä."); scanf("%[^\n]c", &data[cnt].Comment);
+				Init(); printf("ì¼ì • ë‚´ìš©ì˜ ê¸¸ì´ê°€ ë„ˆë¬´ ê¹ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”."); scanf("%[^\n]c", &data[cnt].Comment);
 			}
-			be = fopen("beplay.txt", "r+");
 			
-			char s1[20];
-			strcat(schedule, "\n");
-			sprintf(s1, "%d", data[cnt].Year);
-			strcat(schedule, s1);
-			strcat(schedule, "/");
-			if (data[cnt].Month < 10)
-				strcat(schedule, " ");
-			sprintf(s1, "%d", data[cnt].Month);
-			strcat(schedule, s1);
-			strcat(schedule, "/");
-			if (data[cnt].Day < 10)
-				strcat(schedule, " ");
-
-			sprintf(s1, "%d", data[cnt].Day);
-			strcat(schedule, s1);
-			strcat(schedule, " ÀÏÁ¤ :");
-			strcat(schedule, data[cnt].Comment);
-			strcat(schedule,"\n");
-
-			printf("ÀÔ·Â ¿Ï·á\n");
+			printf("ì…ë ¥ ì™„ë£Œ\n");
 			cnt++;
 			inputN = 0; Stop(); Init();
 		}
 		else if (inputN == 4) {
-		printf("»èÁ¦ÇÒ ¹®Àå°ú ³â ¿ù ÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
-		int ye, da, mo;
-		char chen[1000];
-		printf("³â ¿ù ÀÏ"); scanf("%d %d %d", &ye, &mo, &da);
-		printf("»èÁ¦ÇÒ ¹®Àå:"); scanf("%s", chen);
-		for (int i = 0; i < cnt; i++) {
-			if (data[i].Year == ye) {
-				if (data[i].Day == da) {
-					if (data[i].Month == mo) {
-						if (!strcmp(data[i].Comment, chen)) {
-							cnt--;
-							for (int j = i; j < cnt; j++) {
-								data[j] = data[j + 1];
+			printf("ì‚­ì œí•  ë¬¸ì¥ê³¼ ë…„ ì›” ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”");
+			int ye, da, mo;
+			char chen[1000];
+			printf("ë…„ ì›” ì¼"); scanf("%d %d %d", &ye, &mo, &da);
+			printf("ì‚­ì œí•  ë¬¸ì¥:"); scanf("%s", chen);
+			for (int i = 0; i < cnt; i++) {
+				if (data[i].Year == ye) {
+					if (data[i].Day == da) {
+						if (data[i].Month == mo) {
+							if (!strcmp(data[i].Comment, chen)) {
+								cnt--;
+								for (int j = i; j < cnt; j++) {
+									data[j] = data[j + 1];
+								}
 							}
 						}
 					}
 				}
+
 			}
-		
-		}
 			inputN = 0; Stop(); Init();
 		}
 		else if (inputN == 0) {
-		system("pause");
+			system("pause");
 			Init();
-			printf("ÇÁ·Î±×·¥ÀÌ Á¾·áµË´Ï´Ù.");
+			printf("í”„ë¡œê·¸ë¨ì´ ì¢…ë£Œë©ë‹ˆë‹¤.");
 			be = fopen("beplay.txt", "w");
 			for (int i = 0; i < cnt; i++) {
-				if(i==cnt-1)
+				if (i == cnt - 1)
 					fprintf(be, "%d %d %d %s", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
 				else
 					fprintf(be, "%d %d %d %s\n", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
@@ -211,11 +182,11 @@ int main() {
 			return 0;
 		}
 		else {
-		for (int i = 0; i < cnt; i++)
-			printf("%d %d %d %s", data[i].Year, data[i].Month, data[i].Day,data[i].Comment);
+			for (int i = 0; i < cnt; i++)
+				printf("%d %d %d %s", data[i].Year, data[i].Month, data[i].Day, data[i].Comment);
 
 			//printf(errorAlret);
-			
+
 		}
 	}
 }
